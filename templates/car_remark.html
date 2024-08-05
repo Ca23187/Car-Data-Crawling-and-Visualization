@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <script src="../static/assets/js/echarts.min.js"></script>
+  <title>Mamba Bootstrap Template - Index</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="../static/assets/img/favicon.png" rel="icon">
+  <link href="../static/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,600,600i,700,700i,900" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../static/assets/vendor/animate.css/animate.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../static/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../static/assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../static/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="../static/assets/css/style.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Mamba
+  * Updated: Sep 18 2023 with Bootstrap v5.3.2
+  * Template URL: https://bootstrapmade.com/mamba-one-page-bootstrap-template-free/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="d-flex align-items-center">
+    <div class="container d-flex align-items-center">
+
+      <div class="logo me-auto">
+        <h1><a href="index">B20090315刘扬</a></h1>
+        <!-- Uncomment below if you prefer to use an image logo -->
+        <!-- <a href="index.html"><img src="../static/assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      </div>
+
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="index">首页</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+   <!-- ======= Our Team Section ======= -->
+    <section id="team" class="team">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>车型用户反馈一览</h2>
+          <form action="{{ url_for('car_remark') }}" method="post" role="form">
+              <div class="col-lg-6 form-group">
+                <li style="list-style: none;">
+                  <select name="model">
+                    {% for model in models %}
+                      <option>{{model[0]}}</option>
+                    {% endfor %}
+                  </select>
+                  <input type="submit" value="提交">
+                </li>
+              </div>
+          </form>
+        </div>
+      </div>
+    </section><!-- End Counts Section -->
+   <section class="counts section-bg">
+      <div class="container">
+        <div id="main" style="width: 100%;height:500px;"></div>
+      </div>
+   </section>
+  </header>
+
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer">
+
+    <div class="container">
+      <div class="copyright">
+        &copy; Copyright <strong><span>Mamba</span></strong>. All Rights Reserved
+      </div>
+      <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/mamba-one-page-bootstrap-template-free/ -->
+        Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+      </div>
+    </div>
+  </footer><!-- End Footer -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="../static/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="../static/assets/vendor/aos/aos.js"></script>
+  <script src="../static/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../static/assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../static/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../static/assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../static/assets/vendor/php-email-form/validate.js"></script>
+
+  <!-- Template Main JS File -->
+  <script src="../static/assets/js/main.js"></script>
+  <script type="text/javascript">
+    {% if positives %}
+      // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+      // 指定图表的配置项和数据
+        const builderJson = {
+          charts: {
+            {% for positive in positives %}
+            {{ positive[0] }}: {{ positive[1] }},
+            {% endfor %}
+          },
+          components: {
+            {% for negative in negatives %}
+            {{ negative[0] }}: {{ negative[1] }},
+            {% endfor %}
+          },
+        };
+        const downloadJson = {
+          {% for positive in positives %}
+          {{ positive[0] }}: {{ positive[1] }},
+          {% endfor %}
+        };
+        const themeJson = {
+          {% for negative in negatives %}
+          {{ negative[0] }}: {{ negative[1] }},
+          {% endfor %}
+        };
+        const waterMarkText = 'ECHARTS';
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = canvas.height = 100;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.globalAlpha = 0.08;
+        ctx.font = '20px Microsoft Yahei';
+        ctx.translate(50, 50);
+        ctx.rotate(-Math.PI / 4);
+        ctx.fillText(waterMarkText, 0, 0);
+        option = {
+          backgroundColor: {
+            type: 'pattern',
+            image: canvas,
+            repeat: 'repeat'
+          },
+          tooltip: {},
+          title: [
+            {
+              text: '评价一览',
+              left: '50%',
+              textAlign: 'center'
+            },
+            {
+              text: '正面评价饼状图',
+              left: '75%',
+              textAlign: 'center'
+            },
+            {
+              text: '负面评价饼状图',
+              left: '75%',
+              top: '50%',
+              textAlign: 'center'
+            },
+          ],
+          grid: [
+            {
+              top: 50,
+              width: '50%',
+              bottom: '45%',
+              left: 10,
+              containLabel: true
+            },
+            {
+              top: '55%',
+              width: '50%',
+              bottom: 0,
+              left: 10,
+              containLabel: true
+            }
+          ],
+          xAxis: [
+            {
+              type: 'value',
+              max: builderJson.all,
+              splitLine: {
+                show: false
+              }
+            },
+            {
+              type: 'value',
+              max: builderJson.all,
+              gridIndex: 1,
+              splitLine: {
+                show: false
+              }
+            }
+          ],
+          yAxis: [
+            {
+              type: 'category',
+              data: Object.keys(builderJson.charts),
+              axisLabel: {
+                interval: 0,
+                rotate: 30,
+              },
+              axisTick:{
+                alignWithLabel: true
+              },
+              splitLine: {
+                show: false
+              }
+            },
+            {
+              gridIndex: 1,
+              type: 'category',
+              data: Object.keys(builderJson.components),
+              axisLabel: {
+                interval: 0,
+                rotate: 30,
+              },
+              axisTick:{
+                alignWithLabel: true
+              },
+              splitLine: {
+                show: false
+              }
+            }
+          ],
+          series: [
+            {
+              type: 'bar',
+              stack: 'chart',
+              z: 3,
+              label: {
+                position: 'right',
+                show: true
+              },
+              data: Object.keys(builderJson.charts).map(function (key) {
+                return builderJson.charts[key];
+              })
+            },
+            {
+              type: 'bar',
+              stack: 'chart',
+              silent: true,
+              itemStyle: {
+                color: '#eee'
+              },
+              data: Object.keys(builderJson.charts).map(function (key) {
+                return builderJson.all - builderJson.charts[key];
+              })
+            },
+            {
+              type: 'bar',
+              stack: 'component',
+              xAxisIndex: 1,
+              yAxisIndex: 1,
+              z: 3,
+              label: {
+                position: 'right',
+                show: true
+              },
+              data: Object.keys(builderJson.components).map(function (key) {
+                return builderJson.components[key];
+              })
+            },
+            {
+              type: 'bar',
+              stack: 'component',
+              silent: true,
+              xAxisIndex: 1,
+              yAxisIndex: 1,
+              itemStyle: {
+                color: '#eee'
+              },
+              data: Object.keys(builderJson.components).map(function (key) {
+                return builderJson.all - builderJson.components[key];
+              })
+            },
+            {
+              type: 'pie',
+              radius: [0, '30%'],
+              center: ['75%', '25%'],
+              data: Object.keys(downloadJson).map(function (key) {
+                return {
+                  name: key.replace('.js', ''),
+                  value: downloadJson[key]
+                };
+              })
+            },
+            {
+              type: 'pie',
+              radius: [0, '30%'],
+              center: ['75%', '75%'],
+              data: Object.keys(themeJson).map(function (key) {
+                return {
+                  name: key.replace('.js', ''),
+                  value: themeJson[key]
+                };
+              })
+            }
+          ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        {% endif %}
+  </script>
+</body>
+
+</html>
